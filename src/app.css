@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, "system-ui","Segoe UI",sans-serif;
+}
+
+button {
+    background-color: rgb(221, 221, 221);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.btn-sutle {
+    background: none;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: rgb(201, 201, 201);
+    transition: 0.1s ease-in;
+}
+
+.btn-sutle:hover {
+    cursor: pointer;
+    background-color: rgb(213, 213, 213);
+    transition: 0.1s ease-in;
+}
