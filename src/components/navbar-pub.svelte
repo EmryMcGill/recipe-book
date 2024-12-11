@@ -4,12 +4,12 @@
     </div>
 
     <div class="nav-center nav-container">
-        <button class='title btn-sutle'>Recipe Book</button>
+        <button class='title sbtn'>Recipe Book</button>
     </div>
 
     <div class="nav-right nav-container">
-        <button class='btn-sutle'>Login</button>
-        <button class='btn-sutle'>Register</button>
+        <button>Login</button>
+        <button>Register</button>
     </div>
 </div>
 
@@ -19,12 +19,13 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
-        background-color: aliceblue;
         padding: 0.5rem;
+        border-bottom: 1px solid var(--secondary);
     }
 
     .navbar .title {
         font-size: 1.5rem;
+        font-weight: bold;
     }
 
     .navbar .nav-container {
@@ -34,6 +35,7 @@
     .navbar .nav-right {
         flex: 1;
         justify-content: flex-end;
+        gap: 0.5rem;   
     }
 
     .navbar .nav-center {

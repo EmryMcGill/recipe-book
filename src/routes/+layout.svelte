@@ -6,4 +6,13 @@
 
 
 <Navbar/>
-{@render children()}
+<div class="content">
+    {@render children()}
+</div>
+
+<style>
+    .content {
+        display: flex;
+        flex: 1;
+    }
+</style>

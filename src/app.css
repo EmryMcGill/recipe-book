@@ -1,29 +1,108 @@
+:root {
+    --primary: #1A1A1A;
+    --primary-tint: #282828;
+    --secondary: white;
+    --accent: #edc743;
+}
+
 * {
     margin: 0;
     box-sizing: border-box;
     font-family: -apple-system, "system-ui","Segoe UI",sans-serif;
 }
 
-button {
-    background-color: rgb(221, 221, 221);
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    font-size: 1rem;
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: var(--primary);
 }
 
-.btn-sutle {
-    background: none;
+h1, h2, h3 {
+    color: var(--secondary);
+    font-weight: 400;
+    margin-bottom: 1rem;
+}
+
+button {
+    background-color: var(--accent);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    color: var(--primary);
 }
 
 button:hover {
     cursor: pointer;
-    background-color: rgb(201, 201, 201);
-    transition: 0.1s ease-in;
+    background-color: var(--primary-tint);
+    color: var(--secondary);
+    transition: 0.01s ease-in;
 }
 
-.btn-sutle:hover {
-    cursor: pointer;
-    background-color: rgb(213, 213, 213);
-    transition: 0.1s ease-in;
+.sbtn {
+    background: none;
+    color: var(--secondary);
+    border: 1px solid transparent;
 }
+
+.sbtn:hover {
+    cursor: pointer;
+    transition: 0.01s ease-in;
+    border: 1px solid var(--secondary);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    padding: 2rem;
+    margin: auto;
+    background-color: var(--secondary);
+    border-radius: 10px;
+}
+
+.input-container {
+    width: 400px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+form p {
+    margin-bottom: 0.5rem;
+}
+
+form input {
+    margin-bottom: 1rem;
+}
+
+form button {
+    margin-top: 1rem;
+    background-color: var(--primary);
+    color: var(--secondary);
+    padding: 0.8rem;
+}
+
+form button:hover {
+    background-color: var(--accent);
+    color: var(--primary)
+}
+
+input {
+    border-radius: 5px;
+    border: none;
+    background-color: lightgrey;
+    font-size: 1rem;
+    padding: 0.8rem;
+}
+
+input:focus {
+    outline: 2px solid #1a1a1a;
+}
+
