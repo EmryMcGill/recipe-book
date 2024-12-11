@@ -4,12 +4,12 @@
     </div>
 
     <div class="nav-center nav-container">
-        <button class='title sbtn'>Recipe Book</button>
+        <a href="/" class='title'>Recipe Book</a>
     </div>
 
     <div class="nav-right nav-container">
-        <button>Login</button>
-        <button>Register</button>
+        <a class='nav-link' href="/login">Login</a>
+        <a class='nav-link' href="/register">Register</a>
     </div>
 </div>
 
@@ -20,12 +20,11 @@
         align-items: center;
         width: 100%;
         padding: 0.5rem;
-        border-bottom: 1px solid var(--secondary);
+        border-bottom: 2px solid var(--primary-tint);
     }
 
     .navbar .title {
         font-size: 1.5rem;
-        font-weight: bold;
     }
 
     .navbar .nav-container {
@@ -46,6 +45,26 @@
     .navbar .nav-left {
         flex: 1;
         justify-content: flex-start;
+    }
+
+    .navbar a {
+        text-decoration: none;
+    }
+
+    .navbar .nav-link {
+        text-decoration: none;
+        background-color: var(--primary-tint);
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        font-size: 1rem;
+        color: var(--secondary);
+    }
+
+    .navbar .nav-link:hover {
+        cursor: pointer;
+        background-color: var(--accent);
+        color: var(--primary);
+        transition: 0.01s ease-in;
     }
 
 </style>
