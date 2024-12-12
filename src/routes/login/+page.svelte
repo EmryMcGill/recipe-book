@@ -2,12 +2,15 @@
     // imports
     import { validateLogin } from '$lib/validation';
 
-    // get the action form data
-    /** @type {import('./$types').ActionData} */
-    export let form;
+    // variables
+    let { data, form } = $props();
+    let isLoading = $state(false);
+
+    // functions
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        isLoading = true;
 
         // validate inputs
         const { email, password } = e.target;
@@ -26,7 +29,7 @@
 <div class='container login'>
     <h2>Login</h2>
     <div class='container input-container'>
-        <form method="POST" on:submit={handleSubmit}>
+        <form method="POST" onsubmit={handleSubmit}>
             <p>Email</p>
             <input required type="email" name="email" id="email" placeholder="example@email.com">
 
@@ -36,6 +39,7 @@
             {#if form?.error}<p class='error'>{form.error}</p>{/if}
 
             <button type="submit">Login</button>
+            {#if isLoading}<p>Loading...</p>{/if}
         </form>
     </div>
     <p class='register-msg'>Don't have an account? <a href="/register">Sign up here</a></p>
@@ -48,11 +52,11 @@
         align-items: start;  
     }
 
-    .login h2 {
+    h2 {
         margin-left: 1rem;
     }
 
-    .login .register-msg {
+    .register-msg {
         margin-top: 1rem;
         margin-left: 1rem;
     }

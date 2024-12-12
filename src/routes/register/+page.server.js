@@ -1,11 +1,18 @@
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { pb } from '$lib/db';
 import { validateRegister } from '$lib/validation';
 
-/** @satisfies {import('./$types').Actions} */
+export const load = async ({ locals}) => {
+	// validate user
+	if (locals.user) {
+		throw redirect(303, '/app');
+	}
+	return {user: null};
+}
+
 export const actions = {
 	// action to register the user
-	default: async ({ request }) => {
+	default: async ({ request, locals }) => {
 		// get the form data
         const formData = await request.formData();
 
@@ -27,10 +34,20 @@ export const actions = {
 				password: password, 
 				passwordConfirm: confirmPassword
 			});
-			
 		}
 		catch (err) {
 			return fail(400, { error: 'Failed to create user.' });
 		}
+
+		// attempt to login the user
+		try {
+			const user = await pb.collection('users').authWithPassword(email, password);
+		}
+		catch (err) {
+			return fail(400, { error: 'Failed to log in user.' });
+		}
+
+		// redirect to the home page
+		throw redirect(303, '/app');
 	}
 };

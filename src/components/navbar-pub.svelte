@@ -1,3 +1,6 @@
+<script>
+    import { user } from '../shared.svelte'; 
+</script>
 
 <div class="navbar">
     <div class="nav-left nav-container">
@@ -7,10 +10,17 @@
         <a href="/" class='title'>Recipe Book</a>
     </div>
 
+    {#if user.user}
+        <div class="nav-right nav-container">
+            <a class='nav-link' href="/app">App</a>
+            <a class='nav-link' href="/logout">Logout</a>
+        </div>
+    {:else}
     <div class="nav-right nav-container">
         <a class='nav-link' href="/login">Login</a>
         <a class='nav-link' href="/register">Register</a>
     </div>
+    {/if}
 </div>
 
 <style>

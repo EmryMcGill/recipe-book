@@ -1,11 +1,18 @@
-import { fail } from '@sveltejs/kit';
+import { fail, redirect } from '@sveltejs/kit';
 import { pb } from '$lib/db';
 import { validateLogin } from '$lib/validation';
 
-/** @satisfies {import('./$types').Actions} */
+export const load = async ({ locals}) => {
+	// validate user
+	if (locals.user) {
+		throw redirect(303, '/app');
+	}
+	return {user: null};
+}
+
 export const actions = {
 	// action to log the user in
-	default: async ({ request }) => {
+	default: async ({ request, locals, cookies }) => {
 		// get the form data
         const formData = await request.formData();
 
@@ -21,11 +28,13 @@ export const actions = {
 
 		// attempt to login the user
 		try {
-			const user = await pb.collection('users').authWithPassword(email, password);
-			
+			const user = await locals.pb.collection('users').authWithPassword(email, password);
 		}
 		catch (err) {
 			return fail(400, { error: 'invalid login from pb' });
 		}
+
+		// redirect to the home page
+		throw redirect(303, '/app');
 	}
 };
