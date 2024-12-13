@@ -5,7 +5,7 @@ import PocketBase from 'pocketbase'
 export async function handle({ event, resolve }) {
     console.log('hook');
     // create a connection to the database
-    event.locals.pb = new PocketBase('http://127.0.0.1:8090')
+    event.locals.pb = new PocketBase(import.meta.env.VITE_PB_URI);
 
     // load the current user from cookie if there is one
     event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '')
