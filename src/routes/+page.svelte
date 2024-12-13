@@ -1,2 +1,11 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+    import { user } from '../shared.svelte';
+
+    // get load data
+    let { data } = $props();
+
+    // set the global user state
+    user.user = data.user;
+</script>
+
+<h1>landing</h1>

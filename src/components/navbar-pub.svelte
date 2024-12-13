@@ -1,5 +1,16 @@
 <script>
+    import { goto } from '$app/navigation';
+    import { redirect } from '@sveltejs/kit';
     import { user } from '../shared.svelte'; 
+
+    // handle logout
+    const handleLogout = async () => {
+        // call the logout api
+        const res = await fetch('/api/logout');
+        if (res.ok) {
+            // redirect to the landing page
+            goto('/');
+        }}
 </script>
 
 <div class="navbar">
@@ -13,7 +24,7 @@
     {#if user.user}
         <div class="nav-right nav-container">
             <a class='nav-link' href="/app">App</a>
-            <a class='nav-link' href="/logout">Logout</a>
+            <button class='nav-link' onclick={handleLogout}>Logout</button>
         </div>
     {:else}
     <div class="nav-right nav-container">

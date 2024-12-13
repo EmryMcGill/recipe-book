@@ -3,6 +3,7 @@ import PocketBase from 'pocketbase'
 // run on every request (for authentication)
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
+    console.log('hook');
     // create a connection to the database
     event.locals.pb = new PocketBase('http://127.0.0.1:8090')
 
