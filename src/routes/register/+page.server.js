@@ -3,11 +3,14 @@ import { pb } from '$lib/db';
 import { validateRegister } from '$lib/validation';
 
 export const load = async ({ locals}) => {
-	// validate user
-	if (locals.user) {
+	if (locals.pb.authStore.isValid) {
+		// user is logged in, redirect to app
 		throw redirect(303, '/app');
 	}
-	return {user: null};
+	else {
+		// user is not logged in, return user = null
+		return {user: null};
+	}
 }
 
 export const actions = {

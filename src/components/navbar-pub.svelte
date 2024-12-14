@@ -23,7 +23,6 @@
 
     {#if user.user}
         <div class="nav-right nav-container">
-            <a class='nav-link' href="/app">App</a>
             <button class='nav-link' onclick={handleLogout}>Logout</button>
         </div>
     {:else}

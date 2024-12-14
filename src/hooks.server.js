@@ -1,26 +1,20 @@
-import PocketBase from 'pocketbase'
+import { connectToPb, authenticateUser } from '$lib/db';
 
 // run on every request (for authentication)
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
-    console.log('hook');
-    // create a connection to the database
-    event.locals.pb = new PocketBase(import.meta.env.VITE_PB_URI);
+    // make a connection to pb
+    event.locals.pb = connectToPb();
 
-    // load the current user from cookie if there is one
-    event.locals.pb.authStore.loadFromCookie(event.request.headers.get('cookie') || '')
-
-    // create a shortcut for the user var
-    event.locals.user = event.locals.pb.authStore.model;
+    // authenticate user
+    authenticateUser(event);
 
     // run the action and create response
     const response = await resolve(event);
 
-    // set the cookie to the locals authstore value
+    // re-set the cookie to the locals authstore value
     // TODO: secure for production
-    response.headers.set('set-cookie', event.locals.pb.authStore.exportToCookie(),
-        { secure: false });
-
+    response.headers.set('set-cookie', `${event.locals.pb.authStore.exportToCookie().split('; ')[0]}; ${event.locals.pb.authStore.exportToCookie().split('; ')[2]}; Path=/; SameSite=Strict; httpOnly;`);
     // return the response to the client
     return response;
 }

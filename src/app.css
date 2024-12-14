@@ -17,6 +17,7 @@ body {
     flex-direction: column;
     height: 100vh;
     background-color: var(--primary);
+    overflow: hidden;
 }
 
 h1, h2, h3 {
