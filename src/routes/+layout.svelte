@@ -1,11 +1,12 @@
 <script>
     import '../app.css';
-	let { children } = $props();
     import Navbar from "../components/navbar-pub.svelte";
+
+    let { children } = $props();
 </script>
 
 
-<Navbar/>
+<Navbar />
 <div class="content">
     {@render children()}
 </div>

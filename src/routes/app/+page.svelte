@@ -1,95 +1,153 @@
 <script>
-	import { user } from '../../shared.svelte';
+    import CategoryCard from '../../components/category-card.svelte';
+    import NewCategoryCardBtn from '../../components/new-category-card-btn.svelte';
+	import pen from '../../../static/pen.svg'
+	import penDark from '../../../static/pen-dark.svg'
+	import x from '../../../static/x.svg'
+
 	let { data } = $props();
-
-	// set the global user state
-	user.user = data.user;
-
-  let items = [
-    { id: 1, name: 'Item 1', value: 10 },
-    { id: 2, name: 'Item 2', value: 20 },
-    { id: 3, name: 'Item 3', value: 30 },
-    { id: 4, name: 'Item 4', value: 40 },
-    { id: 5, name: 'Item 5', value: 50 },
-    { id: 6, name: 'Item 6', value: 60 },
-    { id: 7, name: 'Item 7', value: 70 },
-    { id: 8, name: 'Item 8', value: 80 },
-    { id: 9, name: 'Item 9', value: 90 },
-    { id: 10, name: 'Item 10', value: 100 },
-    { id: 11, name: 'Item 11', value: 110 },
-    { id: 12, name: 'Item 12', value: 120 },
-    { id: 13, name: 'Item 13', value: 130 },
-    { id: 14, name: 'Item 14', value: 140 },
-    { id: 15, name: 'Item 15', value: 150 },
-    { id: 16, name: 'Item 16', value: 160 },
-    { id: 17, name: 'Item 17', value: 170 },
-    { id: 18, name: 'Item 18', value: 180 },
-    { id: 19, name: 'Item 19', value: 190 },
-    { id: 20, name: 'Item 20', value: 200 },
-    { id: 21, name: 'Item 21', value: 210 },
-    { id: 22, name: 'Item 22', value: 220 },
-    { id: 23, name: 'Item 23', value: 230 },
-    { id: 24, name: 'Item 24', value: 240 },
-    { id: 25, name: 'Item 25', value: 250 },
-    { id: 26, name: 'Item 26', value: 260 },
-    { id: 27, name: 'Item 27', value: 270 },
-    { id: 28, name: 'Item 28', value: 280 },
-    { id: 29, name: 'Item 29', value: 290 },
-    { id: 30, name: 'Item 30', value: 300 },
-    { id: 31, name: 'Item 31', value: 310 },
-    { id: 32, name: 'Item 32', value: 320 },
-    { id: 33, name: 'Item 33', value: 330 },
-    { id: 34, name: 'Item 34', value: 340 },
-    { id: 35, name: 'Item 35', value: 350 },
-    { id: 36, name: 'Item 36', value: 360 },
-    { id: 37, name: 'Item 37', value: 370 },
-    { id: 38, name: 'Item 38', value: 380 },
-    { id: 39, name: 'Item 39', value: 390 },
-    { id: 40, name: 'Item 40', value: 400 },
-    { id: 41, name: 'Item 41', value: 410 },
-    { id: 42, name: 'Item 42', value: 420 },
-    { id: 43, name: 'Item 43', value: 430 },
-    { id: 44, name: 'Item 44', value: 440 },
-    { id: 45, name: 'Item 45', value: 450 },
-    { id: 46, name: 'Item 46', value: 460 },
-    { id: 47, name: 'Item 47', value: 470 },
-    { id: 48, name: 'Item 48', value: 480 },
-    { id: 49, name: 'Item 49', value: 490 },
-    { id: 50, name: 'Item 50', value: 500 }
-  ];
+    let categories = $state(data.categories);
+	let isEditHover = $state(false);
+	let isEdit = $state(false);
+  
+    // function to fetch all categories
+    const getCategories = async () => {
+      try {
+          let res = await fetch('/api/categories');
+          categories = await res.json();
+      }
+      catch (err) {
+          console.log(err);
+      }
+    }
+  
+    // function to create a new category
+    const createCategory = async (title) => {
+  
+      // atempt to create category
+      try {
+          await fetch('/api/categories', {
+              method: 'POST',
+              body: JSON.stringify({ title }),
+          });
+  
+          // refresh categories
+          await getCategories();
+      }
+      catch (err) {
+          console.log(err);
+      }
+    }
+  
+    // function to update title of category
+  const updateCategory = async (title, categoryId) => {
+      try {
+          await fetch('/api/categories', {
+              method: 'PUT',
+              body: JSON.stringify({ title, categoryId }),
+          });
+  
+          // refresh categories
+          await getCategories();
+      }
+      catch (err) {
+          console.log(err);
+      }
+  }
+  
+    // function to delete a category
+  const deleteCategory = async (categoryId) => {
+      try {
+          await fetch('/api/categories', {
+              method: 'DELETE',
+              body: JSON.stringify({ categoryId }),
+          });
+  
+          // refresh categories
+          await getCategories();
+      }
+      catch (err) {
+          console.log(err);
+      }
+  }
 </script>
+  
+<div class='left-container'>
+    <h1>Categories</h1>
+    <div class='category-container'>
+        {#each categories as category}
+			<div class='edit-container'>
+				<CategoryCard 
+				title={category.title} 
+				id={category.id} 
+				updateCategory={updateCategory} 
+				deleteCategory={deleteCategory} />
+				
+				{#if isEdit}
+				<button class='icon-btn'>
+					<img src={x} alt="delete">
+				</button>
+				{/if}
+			</div>
+        {/each}
 
-<div class='main-container'>
-	<div class='left-container'>
-		<ul>
-			{#each items as item (item.id)}
-			  <li>
-				{item.name}: {item.value}
-			  </li>
-			{/each}
-		  </ul>
-	</div>
-	<div class='right-container'>
-
-	</div>
+		<div class='edit-container'>
+			<NewCategoryCardBtn createCategory={createCategory} />
+			<button onclick={() => isEdit = !isEdit} onmouseenter={() => isEditHover = !isEditHover} onmouseleave={() => isEditHover = !isEditHover} class='icon-btn'>
+				{#if isEditHover}
+				<img  src={penDark} alt="edit">
+				{:else}
+				<img src={pen} alt="edit">
+				{/if}
+			</button>
+		</div>
+    </div>
 </div>
+      
+  
+  <style>
+      .left-container {
+          display: flex;
+          flex-direction: column;
+          width: 50%;
+          max-width: 80%;
+          min-width: 20%;
+          overflow-y: auto;
+          scrollbar-width: none;
+          padding: 1rem;
+          height: 100%;
+          resize: horizontal;
+      }
+  
+      .category-container {
+          display: flex;
+          flex-direction: row;
+          gap: 1rem;
+          flex: 1;
+          flex-wrap: wrap;
+          align-content: flex-start;
+      }
 
-<style>
-	.main-container {
+	  .edit-container {
 		display: flex;
 		width: 100%;
-		height: 100vh;
-	}
+		gap: 1rem;
+		align-items: center;
+	  }
 
-	.left-container {
-		flex: 1;
-		background-color: blue;
-		overflow-y: auto;
-		scrollbar-width: none;
-	}
+	  img {
+		height: 1.2rem;
+	  }
 
-	.right-container {
-		flex: 1;
-		background-color: green;
+	  .icon-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+		border: 3px solid var(--primary-tint);
+    }
+
+	.icon-btn:hover {
+		border: 3px solid var(--accent);
 	}
-</style>
+  </style>

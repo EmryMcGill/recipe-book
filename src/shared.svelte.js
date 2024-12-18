@@ -1,2 +1,6 @@
 // global user state
-export const user = $state({user: null});
+export const shared = $state({
+    user: null, 
+    isCreateRecipe: false,
+    activeCategory: null
+});

@@ -1,7 +1,7 @@
 <script>
+    import { shared } from '../shared.svelte';
     import { goto } from '$app/navigation';
     import { redirect } from '@sveltejs/kit';
-    import { user } from '../shared.svelte'; 
 
     // handle logout
     const handleLogout = async () => {
@@ -21,7 +21,7 @@
         <a href="/" class='title'>Recipe Book</a>
     </div>
 
-    {#if user.user}
+    {#if shared.user}
         <div class="nav-right nav-container">
             <button class='nav-link' onclick={handleLogout}>Logout</button>
         </div>

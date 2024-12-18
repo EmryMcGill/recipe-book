@@ -1,11 +1,11 @@
-
 // called on page load
 export async function load({ locals,  fetch, params }) {
-	const categories = await fetch('/api/categories');
+	const recipes = await fetch(`/api/recipes/${params.slug}`);
 
 	// return user object to hook who will return it to the client
 	return {
 		user: locals.pb.authStore.model,
-		categories: await categories.json()
+		recipes: await recipes.json(),
+		categoryId: params.slug
 	};
 }
