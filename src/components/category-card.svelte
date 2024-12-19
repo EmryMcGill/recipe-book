@@ -3,15 +3,13 @@
     import { tick } from "svelte";
     import x from '../../static/x.svg'
 
-    let { title, id, updateCategory, deleteCategory } = $props();
+    let { title, id, updateCategory, deleteCategory, openCategory } = $props();
     let isChange = $state(false);
     let input = $state();
     let card = $state();
 
     const handleCardClick = () => {
-        if (isChange) {
-            handleSubmit();
-        }
+        openCategory(id);
     }    
 
     const handleTextClick = async (e) => {
@@ -34,28 +32,22 @@
         isChange = false;
         card.style.zIndex = 1;
     }
-
-    const handleDeleteBtnClick = async (e) => {
-        e.stopPropagation();
-        await deleteCategory(id);
-        isChange = false;
-    }
 </script>
 
 {#if isChange}
 <div class='block' onclick={handleSubmit}></div>
 {/if}
 
-    <a href='/app/recipes/{id}' bind:this={card} onclick={handleCardClick} class={isChange ? ' active category-card' : 'category-card'}>
-    
-        {#if isChange}
-            <form onsubmit={handleSubmit}>
-                <input bind:this={input} value={title} type="text" onclick={(e) => e.stopPropagation()}>
-            </form>
-        {:else}
-            <h3 onclick={(e) => handleTextClick(e)}>{title}</h3>
-        {/if}
-    </a>
+<button bind:this={card} onclick={handleCardClick} class={isChange ? ' active category-card' : 'category-card'}>
+
+    {#if isChange}
+        <form onsubmit={handleSubmit}>
+            <input bind:this={input} value={title} type="text" onclick={(e) => e.stopPropagation()}>
+        </form>
+    {:else}
+        <h3 onclick={(e) => handleTextClick(e)}>{title}</h3>
+    {/if}
+</button>
 
 
 <style>

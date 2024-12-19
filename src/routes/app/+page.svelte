@@ -1,111 +1,32 @@
 <script>
-    import CategoryCard from '../../components/category-card.svelte';
-    import NewCategoryCardBtn from '../../components/new-category-card-btn.svelte';
-	import pen from '../../../static/pen.svg'
-	import penDark from '../../../static/pen-dark.svg'
-	import x from '../../../static/x.svg'
+    import { shared } from '../../shared.svelte'
+    import CategoriesList from '../../components/categories-list.svelte';
+    import RecipesList from '../../components/recipes-list.svelte';
 
-	let { data } = $props();
-    let categories = $state(data.categories);
-	let isEditHover = $state(false);
-	let isEdit = $state(false);
-  
-    // function to fetch all categories
-    const getCategories = async () => {
-      try {
-          let res = await fetch('/api/categories');
-          categories = await res.json();
-      }
-      catch (err) {
-          console.log(err);
-      }
-    }
-  
-    // function to create a new category
-    const createCategory = async (title) => {
-  
-      // atempt to create category
-      try {
-          await fetch('/api/categories', {
-              method: 'POST',
-              body: JSON.stringify({ title }),
-          });
-  
-          // refresh categories
-          await getCategories();
-      }
-      catch (err) {
-          console.log(err);
-      }
-    }
-  
-    // function to update title of category
-  const updateCategory = async (title, categoryId) => {
-      try {
-          await fetch('/api/categories', {
-              method: 'PUT',
-              body: JSON.stringify({ title, categoryId }),
-          });
-  
-          // refresh categories
-          await getCategories();
-      }
-      catch (err) {
-          console.log(err);
-      }
-  }
-  
-    // function to delete a category
-  const deleteCategory = async (categoryId) => {
-      try {
-          await fetch('/api/categories', {
-              method: 'DELETE',
-              body: JSON.stringify({ categoryId }),
-          });
-  
-          // refresh categories
-          await getCategories();
-      }
-      catch (err) {
-          console.log(err);
-      }
-  }
+    let { data } = $props();    
+    shared.user = data.user;
+
 </script>
-  
-<div class='left-container'>
-    <h1>Categories</h1>
-    <div class='category-container'>
-        {#each categories as category}
-			<div class='edit-container'>
-				<CategoryCard 
-				title={category.title} 
-				id={category.id} 
-				updateCategory={updateCategory} 
-				deleteCategory={deleteCategory} />
-				
-				{#if isEdit}
-				<button class='icon-btn'>
-					<img src={x} alt="delete">
-				</button>
-				{/if}
-			</div>
-        {/each}
 
-		<div class='edit-container'>
-			<NewCategoryCardBtn createCategory={createCategory} />
-			<button onclick={() => isEdit = !isEdit} onmouseenter={() => isEditHover = !isEditHover} onmouseleave={() => isEditHover = !isEditHover} class='icon-btn'>
-				{#if isEditHover}
-				<img  src={penDark} alt="edit">
-				{:else}
-				<img src={pen} alt="edit">
-				{/if}
-			</button>
-		</div>
+<div class='main-container'>
+    <div class='left-container'>
+        {#if shared.activeCategory !== null}
+        <RecipesList />
+        {:else}
+        <CategoriesList />
+        {/if}
+    </div>
+    <div class='right-container'>
     </div>
 </div>
-      
   
   <style>
+      .main-container {
+          display: flex;
+          width: 100%;
+          height: calc(100vh - 4rem);
+      }
+
       .left-container {
           display: flex;
           flex-direction: column;
@@ -119,35 +40,31 @@
           resize: horizontal;
       }
   
-      .category-container {
-          display: flex;
-          flex-direction: row;
-          gap: 1rem;
+      .right-container {
           flex: 1;
-          flex-wrap: wrap;
-          align-content: flex-start;
+          z-index: 1;
+          background-color: var(--primary);
+          border-left: 2px solid var(--primary-tint-dark);
+          display: flex;
+          flex-direction: column;
+          overflow-y: auto;
+          scrollbar-width: none;
+          padding: 1rem;
+          height: 100%;
       }
 
-	  .edit-container {
-		display: flex;
-		width: 100%;
-		gap: 1rem;
-		align-items: center;
-	  }
-
-	  img {
-		height: 1.2rem;
-	  }
-
-	  .icon-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 1rem;
-		border: 3px solid var(--primary-tint);
-    }
-
-	.icon-btn:hover {
-		border: 3px solid var(--accent);
-	}
+      .block {
+        position: absolute; 
+        z-index: 2;
+        opacity: 0.5; 
+        filter: alpha(opacity = 50); 
+        top: 0; 
+        bottom: 0; 
+        left: 0; 
+        right: 0; 
+        width: 100%; 
+        height: 100%; 
+        background-color: Black; 
+        color: White;
+      }
   </style>
